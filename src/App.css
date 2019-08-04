@@ -1,33 +1,62 @@
-.App {
-  text-align: center;
+body{
+  margin: 0;
+  border: none;
+  padding: 0;
+  padding-left: 20px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 350px;
+  height: 500px;
+  overflow-y: auto;
+  padding: 10px 20px;
+  background: repeating-radial-gradient(#fee 1%, transparent 3%);
 }
 
-.App-link {
-  color: #61dafb;
+li.message {
+  box-sizing: border-box;
+  list-style: none;
+  background: #eea;
+  color: #225;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: right;
+  width: 250px;
+  box-shadow: -2px 2px 4px 0 rgba(0,0,0,0.3);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+li.message.you{
+  background: #aee;
+  align-self: flex-end;
+  border-top-right-radius: 0;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.3);
+}
+
+li.message.server{
+  align-self: flex-start;
+  border-top-left-radius: 0;
+  text-align: left;
+}
+
+li.message::before {
+  content: '';
+  position: absolute;
+  display: block;
+  border: 5px solid transparent;
+}
+
+li.message.you::before {
+  border-left-color: #aee;
+  border-top-color: #aee;
+  margin: -5px 240px;
+}
+
+li.message.server::before {
+  border-right-color: #eea;
+  border-top-color: #eea;
+  margin: -5px -20px;
 }
