@@ -10,7 +10,7 @@ function App() {
 
   // Initially connect to socket
   useEffect(() => {
-    setSocket(new WebSocket('ws://dot-show.glitch.me/echo'));
+    setSocket(new WebSocket('wss://dot-show.glitch.me/echo'));
   }, []);
 
   // attach event listeners
