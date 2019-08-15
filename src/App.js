@@ -2,19 +2,46 @@ import React, { useState, createRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [socket] = useState(new WebSocket('ws://dot-show.glitch.me/echo'));
+  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
   const [responses, setResponses] = useState([]);
   const [isSocketConnected, setSocketConnected] = useState(false);
   const responsesRef = createRef();
 
-  socket.addEventListener('open', function (event) {
-    setSocketConnected(true);
-  });
+  // Initially connect to socket
+  useEffect(() => {
+    setSocket(new WebSocket('ws://dot-show.glitch.me/echo'));
+  }, []);
 
-  socket.addEventListener('message', function (event) {
-    setResponses([...responses, { message: event.data, from: 'server' }]);
-  });
+  // attach event listeners
+  useEffect(() => {
+    function onOpen(event) {
+      setSocketConnected(true);
+    }
+
+    function onMessage(event) {
+      setResponses([...responses, { message: event.data, from: 'server' }]);
+    }
+
+    if (socket) {
+      socket.addEventListener('open', onOpen);
+      socket.addEventListener('message', onMessage);
+    }
+
+    return () => {
+      if (socket) {
+        socket.removeEventListener('open', onOpen);
+        socket.removeEventListener('message', onMessage);
+      }
+    };
+  }, [responses, socket]);
+
+  // Scroll to bottom
+  useEffect(() => {
+    if (responsesRef && responsesRef.current) {
+      responsesRef.current.scrollTop = responsesRef.current.scrollHeight;
+    }
+  }, [responses, responsesRef]);
 
   const sendMessage = (ev) => {
     ev.preventDefault();
@@ -22,12 +49,6 @@ function App() {
     socket.send(message);
     setMessage('');
   };
-
-  useEffect(() => {
-    if (responsesRef && responsesRef.current) {
-      responsesRef.current.scrollTop = responsesRef.current.scrollHeight;
-    }
-  }, [responses, responsesRef]);
 
   return (
     <div className="App">

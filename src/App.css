@@ -3,6 +3,9 @@ body{
   border: none;
   padding: 0;
   padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 ul {
